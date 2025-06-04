@@ -6,3 +6,10 @@ Author URI: https://rafallesniak.com/
 Description: Responsywny motyw służący do wyświetlania członków parlamentu
 Version: 1.0
 */
+
+/* Custom styles not covered by Tailwind */
+.parlament-gradient {
+  background-image: linear-gradient(to right, #d2232a, #96172e);
+}
+
+/* Any additional custom CSS that might be needed but not possible with Tailwind classes */

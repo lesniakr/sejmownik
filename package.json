@@ -1,0 +1,21 @@
+{
+  "name": "sejmownik",
+  "version": "1.0.0",
+  "description": "WordPress theme for displaying Polish parliament members",
+  "main": "index.js",
+  "scripts": {
+    "dev": "npx tailwindcss -i ./wp-content/themes/sejmownik/src/css/tailwind.css -o ./wp-content/themes/sejmownik/dist/css/tailwind.css --watch",
+    "build": "npx tailwindcss -i ./wp-content/themes/sejmownik/src/css/tailwind.css -o ./wp-content/themes/sejmownik/dist/css/tailwind.css --minify"
+  },
+  "keywords": [
+    "wordpress",
+    "theme",
+    "tailwind",
+    "parliament"
+  ],
+  "author": "Rafał Leśniak",
+  "license": "MIT",
+  "devDependencies": {
+    "tailwindcss": "^3.3.3"
+  }
+}
