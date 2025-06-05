@@ -6,7 +6,7 @@
 get_header();
 
 // Get current sort parameter or set default
-$current_sort = isset($_GET['sort']) ? sanitize_text_field($_GET['sort']) : 'name_asc';
+$current_sort = isset($_GET['sort']) ? sanitize_text_field($_GET['sort']) : 'lastname_asc';
 ?>
 
 <div class="container mx-auto px-4 py-8">
@@ -17,8 +17,10 @@ $current_sort = isset($_GET['sort']) ? sanitize_text_field($_GET['sort']) : 'nam
             <form method="get" action="<?php echo esc_url(get_post_type_archive_link('mp')); ?>" class="flex items-center">
                 <label for="sort-select" class="mr-2 text-gray-700">Sortuj wg:</label>
                 <select name="sort" id="sort-select" class="border border-gray-300 rounded py-2 px-3 focus:outline-none focus:ring-2 focus:ring-parlament-blue">
-                    <option value="name_asc" <?php selected($current_sort, 'name_asc'); ?>>Nazwisko (A-Z)</option>
-                    <option value="name_desc" <?php selected($current_sort, 'name_desc'); ?>>Nazwisko (Z-A)</option>
+                    <option value="lastname_asc" <?php selected($current_sort, 'lastname_asc'); ?>>Nazwisko (A-Z)</option>
+                    <option value="lastname_desc" <?php selected($current_sort, 'lastname_desc'); ?>>Nazwisko (Z-A)</option>
+                    <option value="firstname_asc" <?php selected($current_sort, 'firstname_asc'); ?>>Imię (A-Z)</option>
+                    <option value="firstname_desc" <?php selected($current_sort, 'firstname_desc'); ?>>Imię (Z-A)</option>
                     <option value="date_desc" <?php selected($current_sort, 'date_desc'); ?>>Najnowsze</option>
                     <option value="date_asc" <?php selected($current_sort, 'date_asc'); ?>>Najstarsze</option>
                     <option value="id_asc" <?php selected($current_sort, 'id_asc'); ?>>ID (rosnąco)</option>

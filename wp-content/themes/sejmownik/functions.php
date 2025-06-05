@@ -72,16 +72,30 @@ function sejmownik_modify_mp_archive_query($query) {
         $query->set('posts_per_page', 12);
         
         // Handle sorting
-        $sort = isset($_GET['sort']) ? sanitize_text_field($_GET['sort']) : 'name_asc';
+        $sort = isset($_GET['sort']) ? sanitize_text_field($_GET['sort']) : 'lastname_asc';
         
         switch ($sort) {
-            case 'name_asc':
-                $query->set('orderby', 'title');
+            case 'lastname_asc':
+                $query->set('meta_key', 'last_name');
+                $query->set('orderby', 'meta_value');
                 $query->set('order', 'ASC');
                 break;
                 
-            case 'name_desc':
-                $query->set('orderby', 'title');
+            case 'lastname_desc':
+                $query->set('meta_key', 'last_name');
+                $query->set('orderby', 'meta_value');
+                $query->set('order', 'DESC');
+                break;
+                
+            case 'firstname_asc':
+                $query->set('meta_key', 'first_name');
+                $query->set('orderby', 'meta_value');
+                $query->set('order', 'ASC');
+                break;
+                
+            case 'firstname_desc':
+                $query->set('meta_key', 'first_name');
+                $query->set('orderby', 'meta_value');
                 $query->set('order', 'DESC');
                 break;
                 
@@ -106,7 +120,8 @@ function sejmownik_modify_mp_archive_query($query) {
                 break;
                 
             default:
-                $query->set('orderby', 'title');
+                $query->set('meta_key', 'last_name');
+                $query->set('orderby', 'meta_value');
                 $query->set('order', 'ASC');
                 break;
         }
