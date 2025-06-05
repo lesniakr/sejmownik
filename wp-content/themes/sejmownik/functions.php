@@ -63,6 +63,58 @@ add_action('wp_enqueue_scripts', 'sejmownik_scripts');
 require get_template_directory() . '/includes/template-functions.php';
 
 /**
+ * Modify the number of MPs per page in archive and handle sorting
+ */
+function sejmownik_modify_mp_archive_query($query) {
+    // Only modify the main query on frontend for MP archive
+    if (!is_admin() && $query->is_main_query() && is_post_type_archive('mp')) {
+        // Set posts per page
+        $query->set('posts_per_page', 12);
+        
+        // Handle sorting
+        $sort = isset($_GET['sort']) ? sanitize_text_field($_GET['sort']) : 'name_asc';
+        
+        switch ($sort) {
+            case 'name_asc':
+                $query->set('orderby', 'title');
+                $query->set('order', 'ASC');
+                break;
+                
+            case 'name_desc':
+                $query->set('orderby', 'title');
+                $query->set('order', 'DESC');
+                break;
+                
+            case 'date_desc':
+                $query->set('orderby', 'date');
+                $query->set('order', 'DESC');
+                break;
+                
+            case 'date_asc':
+                $query->set('orderby', 'date');
+                $query->set('order', 'ASC');
+                break;
+                
+            case 'id_asc':
+                $query->set('orderby', 'ID');
+                $query->set('order', 'ASC');
+                break;
+                
+            case 'id_desc':
+                $query->set('orderby', 'ID');
+                $query->set('order', 'DESC');
+                break;
+                
+            default:
+                $query->set('orderby', 'title');
+                $query->set('order', 'ASC');
+                break;
+        }
+    }
+}
+add_action('pre_get_posts', 'sejmownik_modify_mp_archive_query');
+
+/**
  * Register ACF Options Page
  */
 if (function_exists('acf_add_options_page')) {
