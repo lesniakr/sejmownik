@@ -25,6 +25,11 @@ function mp_display_photo($post_id = null, $size = 'medium', $attr = array()) {
         $attr = array();
     }
     
+    // Add loading="lazy" to default attributes
+    if (!isset($attr['loading'])) {
+        $attr['loading'] = 'lazy';
+    }
+    
     // Check for featured image
     if (has_post_thumbnail($post_id)) {
         echo get_the_post_thumbnail($post_id, $size, $attr);
@@ -41,6 +46,7 @@ function mp_display_photo($post_id = null, $size = 'medium', $attr = array()) {
                 'src' => esc_url($photo_url),
                 'alt' => get_the_title($post_id),
                 'class' => 'mp-photo api-photo',
+                'loading' => 'lazy',
             );
             
             // If attr has a class, append it to the default class

@@ -38,12 +38,12 @@ get_header();
                         $district = get_field('district');
                 ?>
                     <div class="bg-white rounded-lg shadow-md overflow-hidden animate-scale hover:shadow-lg transition-shadow flex">
-                        <div class="w-1/3 relative overflow-hidden bg-gray-200">
+                        <div class="w-2/5 relative overflow-hidden bg-gray-200">
                             <a href="<?php the_permalink(); ?>" title="<?php the_title_attribute(); ?>">
                                 <?php mp_display_photo(null, 'medium', 'w-full h-full object-cover'); ?>
                             </a>
                         </div>
-                        <div class="p-4 w-2/3">
+                        <div class="p-4 w-3/5">
                             <div class="mb-2">
                                 <h3 class="text-lg font-bold text-gray-800">
                                     <a href="<?php the_permalink(); ?>" class="hover:text-parlament-blue"><?php the_title(); ?></a>
@@ -63,7 +63,7 @@ get_header();
                             <?php endif; ?>
                             
                             <div>
-                                <a href="<?php the_permalink(); ?>" class="text-sm text-parlament-blue hover:underline">Zobacz profil</a>
+                                <a href="<?php the_permalink(); ?>" class="text-sm text-parlament-red hover:underline font-bold">Zobacz profil</a>
                             </div>
                         </div>
                     </div>
