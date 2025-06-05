@@ -22,7 +22,7 @@ get_header();
         <div class="container mx-auto px-4">
             <h2 class="text-3xl font-bold mb-8 text-center"><?php the_title(); ?></h2>
             
-            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6">
+            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
                 <?php
                 $args = array(
                     'post_type' => 'mp',
@@ -37,13 +37,17 @@ get_header();
                         $club = get_field('club');
                         $district = get_field('district');
                 ?>
-                    <div class="bg-white rounded-lg shadow-md overflow-hidden animate-scale hover:shadow-lg transition-shadow">
-                        <div class="relative w-full h-48 overflow-hidden">
-                            <?php mp_display_photo(null, 'medium', 'w-full h-full object-cover'); ?>
+                    <div class="bg-white rounded-lg shadow-md overflow-hidden animate-scale hover:shadow-lg transition-shadow flex">
+                        <div class="w-1/3 relative overflow-hidden bg-gray-200">
+                            <a href="<?php the_permalink(); ?>" title="<?php the_title_attribute(); ?>">
+                                <?php mp_display_photo(null, 'medium', 'w-full h-full object-cover'); ?>
+                            </a>
                         </div>
-                        <div class="p-4">
+                        <div class="p-4 w-2/3">
                             <div class="mb-2">
-                                <h3 class="text-lg font-bold text-gray-800"><?php the_title(); ?></h3>
+                                <h3 class="text-lg font-bold text-gray-800">
+                                    <a href="<?php the_permalink(); ?>" class="hover:text-parlament-blue"><?php the_title(); ?></a>
+                                </h3>
                             </div>
                             
                             <?php if ($club) : ?>
@@ -59,7 +63,7 @@ get_header();
                             <?php endif; ?>
                             
                             <div>
-                                <a href="<?php the_permalink(); ?>" class="text-sm text-parlament-blue hover:underline">Profil</a>
+                                <a href="<?php the_permalink(); ?>" class="text-sm text-parlament-blue hover:underline">Zobacz profil</a>
                             </div>
                         </div>
                     </div>
