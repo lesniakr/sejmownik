@@ -36,9 +36,13 @@ function mp_display_photo($post_id = null, $size = 'medium', $attr = array()) {
         return;
     }
     
-    // No featured image, try API photo
+    // No featured image, try API photo (only for MPs imported from API)
     $mp_id = get_field('mp_id', $post_id);
-    if ($mp_id) {
+    
+    // Check if this is a manually created MP (ID starts with 'm')
+    $is_manual_mp = $mp_id && substr($mp_id, 0, 1) === 'm';
+    
+    if ($mp_id && !$is_manual_mp) {
         $photo_url = MP_API_Handler::get_mp_photo_url($mp_id);
         if ($photo_url) {
             // Default image attributes

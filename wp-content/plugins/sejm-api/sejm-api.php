@@ -67,3 +67,28 @@ function mp_change_featured_image_text($labels) {
     return $labels;
 }
 add_filter('post_type_labels_mp', 'mp_change_featured_image_text');
+
+/**
+ * Generate a default MP ID for manually created MPs
+ */
+function mp_generate_default_id($post_id, $post, $update) {
+    if ($post->post_type !== 'mp' || wp_is_post_autosave($post_id) || wp_is_post_revision($post_id)) {
+        return;
+    }
+    
+    // Check if this post already has an MP ID
+    $existing_mp_id = get_field('mp_id', $post_id);
+    
+    // If no MP ID is set, generate one
+    if (empty($existing_mp_id)) {
+        // Generate ID with 'm' prefix + post ID
+        $new_mp_id = 'm' . $post_id;
+        
+        // Update the field
+        update_field('mp_id', $new_mp_id, $post_id);
+        
+        // Log for debugging
+        error_log('MP Plugin: Generated manual MP ID: ' . $new_mp_id . ' for post ' . $post_id);
+    }
+}
+add_action('save_post', 'mp_generate_default_id', 20, 3);
