@@ -28,15 +28,21 @@ if (!function_exists('sejmownik_setup')) :
             'flex-width'  => true,
             'flex-height' => true,
         ));
-
-        // Register nav menus
-        register_nav_menus(array(
-            'primary' => esc_html__('Primary Menu', 'sejmownik'),
-            'footer'  => esc_html__('Footer Menu', 'sejmownik'),
-        ));
     }
 endif;
 add_action('after_setup_theme', 'sejmownik_setup');
+
+/**
+ * Register navigation menus
+ */
+function sejmownik_register_menus() {
+    register_nav_menus(array(
+        'primary' => esc_html__('Primary Menu', 'sejmownik'),
+        'footer-1' => esc_html__('Footer Menu 1', 'sejmownik'),
+        'footer-2' => esc_html__('Footer Menu 2', 'sejmownik'),
+    ));
+}
+add_action('after_setup_theme', 'sejmownik_register_menus');
 
 /**
  * Enqueue scripts and styles.
