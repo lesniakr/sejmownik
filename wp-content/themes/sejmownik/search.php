@@ -23,7 +23,7 @@ $search_query = get_search_query();
     </div>
     
     <?php if ($is_mp_search): ?>
-        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             <?php if (have_posts()) : ?>
                 <?php while (have_posts()) : the_post(); 
                     // Get MP data

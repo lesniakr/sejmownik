@@ -129,23 +129,26 @@ $mp_data = function_exists('get_mp_complete_data') ? get_mp_complete_data() : ar
         </div>
         
         <div class="bg-gray-50 px-6 py-4 border-t border-gray-200">
-            <div class="flex justify-between items-center">
+            <div class="flex flex-col space-y-4 md:flex-row md:justify-between md:items-center md:space-y-0">
                 <a href="<?php echo get_post_type_archive_link('mp'); ?>" class="inline-flex items-center text-parlament-blue hover:underline">
                     <i class="fas fa-arrow-left mr-2"></i> Wróć do listy posłów
                 </a>
                 
-                <div class="flex items-center space-x-3">
-                    <span class="text-gray-600 text-sm">Udostępnij profil 
-                    <?php if (!empty($mp_data['accusativeName'])) : ?>
-                        <?php echo esc_html($mp_data['accusativeName']); ?></p>
-                    <?php endif; ?>    
+                <div class="flex flex-wrap items-center space-x-3">
+                    <span class="text-gray-600 text-sm">
+                        Udostępnij profil 
+                        <?php if (!empty($mp_data['accusativeName'])) : ?>
+                            <?php echo esc_html($mp_data['accusativeName']); ?>
+                        <?php endif; ?>
                     </span>
-                    <a href="https://www.facebook.com/sharer/sharer.php?u=<?php echo urlencode(get_permalink()); ?>" target="_blank" rel="noopener noreferrer" class="text-blue-600 hover:text-blue-800">
-                        <i class="fab fa-facebook-f"></i>
-                    </a>
-                    <a href="mailto:?subject=<?php echo urlencode(get_the_title()); ?>&body=<?php echo urlencode(get_permalink()); ?>" class="text-red-600 hover:text-red-800">
-                        <i class="fas fa-envelope"></i>
-                    </a>
+                    <div class="flex items-center space-x-3">
+                        <a href="https://www.facebook.com/sharer/sharer.php?u=<?php echo urlencode(get_permalink()); ?>" target="_blank" rel="noopener noreferrer" class="text-blue-600 hover:text-blue-800">
+                            <i class="fab fa-facebook-f"></i>
+                        </a>
+                        <a href="mailto:?subject=<?php echo urlencode(get_the_title()); ?>&body=<?php echo urlencode(get_permalink()); ?>" class="text-red-600 hover:text-red-800">
+                            <i class="fas fa-envelope"></i>
+                        </a>
+                    </div>
                 </div>
             </div>
         </div>

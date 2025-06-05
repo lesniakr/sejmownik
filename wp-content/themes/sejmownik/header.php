@@ -38,9 +38,7 @@
                     <h1 class="text-2xl md:text-3xl font-bold text-white"><?php bloginfo('name'); ?></h1>
                     <?php $description = get_bloginfo('description', 'display'); ?>
                     <?php if ($description) : ?>
-                        <p class="text-white opacity-80"><?php echo $description; ?></p>
-                    <?php else: ?>
-                        <p class="text-white opacity-80">Lista posłów na Sejm RP</p>
+                        <p class="hidden md:inline text-white opacity-80"><?php echo $description; ?></p>
                     <?php endif; ?>
                 </div>
             </div>
