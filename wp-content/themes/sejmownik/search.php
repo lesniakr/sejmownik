@@ -1,47 +1,36 @@
 <?php
 /**
- * The template for displaying MP archives
+ * The template for displaying search results
  */
 
 get_header();
 
-// Get current sort parameter or set default
-$current_sort = isset($_GET['sort']) ? sanitize_text_field($_GET['sort']) : 'lastname_asc';
+// Check if we're searching for MPs (the header form includes post_type=mp)
+$is_mp_search = isset($_GET['post_type']) && $_GET['post_type'] === 'mp';
+$search_query = get_search_query();
 ?>
 
 <div class="container mx-auto px-4 pb-8 pt-4">
     
     <div class="flex flex-col md:flex-row justify-between items-center mb-8">
-        <h1 class="text-3xl font-bold text-center md:text-left mb-4 md:mb-0"><?php post_type_archive_title(); ?></h1>
-        
-        <div class="mp-sort-controls">
-            <form method="get" action="<?php echo esc_url(get_post_type_archive_link('mp')); ?>" class="flex items-center">
-                <label for="sort-select" class="mr-2 text-gray-700">Sortuj wg:</label>
-                <select name="sort" id="sort-select" class="border border-gray-300 rounded py-2 px-3 focus:outline-none focus:ring-2 focus:ring-parlament-blue">
-                    <option value="lastname_asc" <?php selected($current_sort, 'lastname_asc'); ?>>Nazwisko (A-Z)</option>
-                    <option value="lastname_desc" <?php selected($current_sort, 'lastname_desc'); ?>>Nazwisko (Z-A)</option>
-                    <option value="firstname_asc" <?php selected($current_sort, 'firstname_asc'); ?>>Imię (A-Z)</option>
-                    <option value="firstname_desc" <?php selected($current_sort, 'firstname_desc'); ?>>Imię (Z-A)</option>
-                    <option value="date_desc" <?php selected($current_sort, 'date_desc'); ?>>Najnowsze</option>
-                    <option value="date_asc" <?php selected($current_sort, 'date_asc'); ?>>Najstarsze</option>
-                    <option value="id_asc" <?php selected($current_sort, 'id_asc'); ?>>ID (rosnąco)</option>
-                    <option value="id_desc" <?php selected($current_sort, 'id_desc'); ?>>ID (malejąco)</option>
-                </select>
-                <button type="submit" class="ml-2 bg-parlament-blue text-white py-2 px-3 rounded hover:bg-blue-800">
-                    <i class="fas fa-sort mr-1"></i> Sortuj
-                </button>
-            </form>
-        </div>
+        <h1 class="text-3xl font-bold text-center md:text-left mb-4 md:mb-0">
+            <?php if ($is_mp_search): ?>
+                Wyniki wyszukiwania posłów: <span class="text-parlament-blue"><?php echo esc_html($search_query); ?></span>
+            <?php else: ?>
+                Wyniki wyszukiwania: <span class="text-parlament-blue"><?php echo esc_html($search_query); ?></span>
+            <?php endif; ?>
+        </h1>
     </div>
     
-    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-        <?php if (have_posts()) : ?>
-            <?php while (have_posts()) : the_post(); 
-                // Get MP data
-                $club = get_field('club');
-                $district = get_field('district');
-            ?>
-                <div class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow flex">
+    <?php if ($is_mp_search): ?>
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+            <?php if (have_posts()) : ?>
+                <?php while (have_posts()) : the_post(); 
+                    // Get MP data
+                    $club = get_field('club');
+                    $district = get_field('district');
+                ?>
+                    <div class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow flex">
                     <div class="w-2/5 relative overflow-hidden bg-gray-200">
                         <a href="<?php the_permalink(); ?>" title="<?php the_title_attribute(); ?>">
                             <?php mp_display_photo(null, 'medium', 'w-full h-full object-cover'); ?>
@@ -71,13 +60,47 @@ $current_sort = isset($_GET['sort']) ? sanitize_text_field($_GET['sort']) : 'las
                         </div>
                     </div>
                 </div>
-            <?php endwhile; ?>
-        <?php else : ?>
-            <div class="col-span-full text-center py-12">
-                <p class="text-gray-600">Nie znaleziono posłów.</p>
-            </div>
-        <?php endif; ?>
-    </div>
+                <?php endwhile; ?>
+            <?php else : ?>
+                <div class="col-span-full text-center py-12">
+                    <p class="text-gray-600">Nie znaleziono posłów spełniających kryteria wyszukiwania "<?php echo esc_html($search_query); ?>".</p>
+                    <p class="mt-4">
+                        <a href="<?php echo get_post_type_archive_link('mp'); ?>" class="inline-block px-6 py-3 bg-parlament-blue text-white font-medium rounded-md hover:bg-blue-800 transition">
+                            Zobacz wszystkich posłów
+                        </a>
+                    </p>
+                </div>
+            <?php endif; ?>
+        </div>
+    <?php else: ?>
+        <div class="bg-white rounded-lg shadow-md p-6">
+            <?php if (have_posts()) : ?>
+                <?php while (have_posts()) : the_post(); ?>
+                    <article class="mb-6 pb-6 border-b border-gray-200 last:border-0 last:mb-0 last:pb-0">
+                        <h2 class="text-xl font-bold mb-2">
+                            <a href="<?php the_permalink(); ?>" class="text-parlament-blue hover:underline"><?php the_title(); ?></a>
+                        </h2>
+                        <div class="text-gray-600 mb-3">
+                            <?php echo get_the_date(); ?> | <?php the_author(); ?>
+                        </div>
+                        <div class="text-gray-700">
+                            <?php the_excerpt(); ?>
+                        </div>
+                        <a href="<?php the_permalink(); ?>" class="inline-block mt-3 text-parlament-blue hover:underline">Czytaj więcej</a>
+                    </article>
+                <?php endwhile; ?>
+            <?php else : ?>
+                <div class="text-center py-8">
+                    <p class="text-gray-600">Nie znaleziono wyników dla "<?php echo esc_html($search_query); ?>".</p>
+                    <p class="mt-4">
+                        <a href="<?php echo home_url(); ?>" class="inline-block px-6 py-3 bg-parlament-blue text-white font-medium rounded-md hover:bg-blue-800 transition">
+                            Wróć do strony głównej
+                        </a>
+                    </p>
+                </div>
+            <?php endif; ?>
+        </div>
+    <?php endif; ?>
     
     <div class="pt-8">
         <?php
