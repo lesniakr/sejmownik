@@ -681,9 +681,32 @@ h1, h2, h3, h4, h5, h6 {
 .inline-block {
   display: inline-block;
 }
+.mb-2 {
+  margin-bottom: 0.5rem;
+}
+
+.mr-2 {
+  margin-right: 0.5rem;
+}
+
+.mt-2 {
+  margin-top: 0.5rem;
+}
+
+.mt-4 {
+  margin-top: 1rem;
+}
+
+.mt-8 {
+  margin-top: 2rem;
+}
 
 .flex {
   display: flex;
+}
+
+.table {
+  display: table;
 }
 
 .grid {
@@ -760,6 +783,22 @@ h1, h2, h3, h4, h5, h6 {
   border-radius: 0.25rem;
 }
 
+.gap-8 {
+  gap: 2rem;
+}
+
+.space-x-4 > :not([hidden]) ~ :not([hidden]) {
+  --tw-space-x-reverse: 0;
+  margin-right: calc(1rem * var(--tw-space-x-reverse));
+  margin-left: calc(1rem * calc(1 - var(--tw-space-x-reverse)));
+}
+
+.space-y-2 > :not([hidden]) ~ :not([hidden]) {
+  --tw-space-y-reverse: 0;
+  margin-top: calc(0.5rem * calc(1 - var(--tw-space-y-reverse)));
+  margin-bottom: calc(0.5rem * var(--tw-space-y-reverse));
+}
+
 .rounded-full {
   border-radius: 9999px;
 }
@@ -820,6 +859,14 @@ h1, h2, h3, h4, h5, h6 {
   --tw-bg-opacity: 1;
   background-color: rgb(220 38 38 / var(--tw-bg-opacity, 1));
 }
+.border-t {
+  border-top-width: 1px;
+}
+
+.border-gray-700 {
+  --tw-border-opacity: 1;
+  border-color: rgb(55 65 81 / var(--tw-border-opacity, 1));
+}
 
 .bg-white {
   --tw-bg-opacity: 1;
@@ -844,6 +891,10 @@ h1, h2, h3, h4, h5, h6 {
 .object-cover {
   -o-object-fit: cover;
      object-fit: cover;
+}
+.bg-gray-800 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(31 41 55 / var(--tw-bg-opacity, 1));
 }
 
 .p-2 {
@@ -903,6 +954,11 @@ h1, h2, h3, h4, h5, h6 {
   padding-left: 0.75rem;
   padding-right: 0.75rem;
 }
+  
+.py-12 {
+  padding-top: 3rem;
+  padding-bottom: 3rem;
+}
 
 .pl-10 {
   padding-left: 2.5rem;
@@ -910,6 +966,10 @@ h1, h2, h3, h4, h5, h6 {
 
 .pr-4 {
   padding-right: 1rem;
+}
+
+.pt-8 {
+  padding-top: 2rem;
 }
 
 .text-center {
@@ -944,6 +1004,11 @@ h1, h2, h3, h4, h5, h6 {
   font-size: 0.75rem;
   line-height: 1rem;
 }
+  
+.text-xl {
+  font-size: 1.25rem;
+  line-height: 1.75rem;
+}
 
 .font-bold {
   font-weight: 700;
@@ -951,6 +1016,10 @@ h1, h2, h3, h4, h5, h6 {
 
 .font-medium {
   font-weight: 500;
+}
+
+.not-italic {
+  font-style: normal;
 }
 
 .text-gray-400 {
@@ -986,6 +1055,11 @@ h1, h2, h3, h4, h5, h6 {
 .text-gray-700 {
   --tw-text-opacity: 1;
   color: rgb(55 65 81 / var(--tw-text-opacity, 1));
+}
+  
+.text-parlament-gold {
+  --tw-text-opacity: 1;
+  color: rgb(240 193 75 / var(--tw-text-opacity, 1));
 }
 
 .opacity-80 {
@@ -1046,6 +1120,11 @@ h1, h2, h3, h4, h5, h6 {
   --tw-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
   --tw-shadow-colored: 0 10px 15px -3px var(--tw-shadow-color), 0 4px 6px -4px var(--tw-shadow-color);
   box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+}
+  
+.hover\:text-parlament-gold:hover {
+  --tw-text-opacity: 1;
+  color: rgb(240 193 75 / var(--tw-text-opacity, 1));
 }
 
 .focus\:outline-none:focus {
