@@ -28,7 +28,7 @@ $current_sort = isset($_GET['sort']) ? sanitize_text_field($_GET['sort']) : 'las
                     <option value="id_desc" <?php selected($current_sort, 'id_desc'); ?>>ID (malejąco)</option>
                 </select>
                 <button type="submit" class="ml-2 bg-parlament-blue text-white py-2 px-3 rounded hover:bg-blue-800">
-                    <i class="fas fa-sort"></i> Sortuj
+                    <i class="fas fa-sort mr-1"></i> Sortuj
                 </button>
             </form>
         </div>
@@ -75,13 +75,41 @@ $current_sort = isset($_GET['sort']) ? sanitize_text_field($_GET['sort']) : 'las
         <?php endif; ?>
     </div>
     
-    <div class="mt-8">
-        <?php the_posts_pagination(array(
+    <div class="pt-8">
+        <?php
+        $pagination = paginate_links(array(
             'mid_size' => 2,
-            'prev_text' => '<i class="fas fa-chevron-left mr-2"></i>Poprzednia',
-            'next_text' => 'Następna<i class="fas fa-chevron-right ml-2"></i>',
-            'class' => 'flex justify-center',
-        )); ?>
+            'prev_text' => '&laquo; Poprzednia',
+            'next_text' => 'Następna &raquo;',
+            'type' => 'array',
+        ));
+        
+        if ($pagination) : ?>
+            <nav aria-label="Paginacja" class="flex justify-center">
+                <ul class="inline-flex items-center space-x-2">
+                    <?php foreach ($pagination as $key => $page_link) : 
+                        $active = strpos($page_link, 'current') !== false ? 'bg-parlament-blue text-white' : 'bg-white text-gray-500 hover:bg-gray-100 hover:text-parlament-blue';
+                    ?>
+                        <li>
+                            <?php 
+                            // Clean up the page link classes and add Tailwind classes
+                            $page_link = preg_replace('/class="[^"]*"/', '', $page_link);
+                            
+                            if (strpos($page_link, 'prev') !== false) {
+                                echo str_replace('<a', '<a class="block px-3 py-2 leading-tight border border-gray-300 rounded-md ' . $active . '"', $page_link);
+                            } elseif (strpos($page_link, 'next') !== false) {
+                                echo str_replace('<a', '<a class="block px-3 py-2 leading-tight border border-gray-300 rounded-md ' . $active . '"', $page_link);
+                            } elseif (strpos($page_link, 'current') !== false) {
+                                echo str_replace(['<a', '<span'], ['<a class="z-10 px-3 py-2 leading-tight border border-parlament-blue rounded-md ' . $active . '"', '<span class="z-10 px-3 py-2 leading-tight border border-parlament-blue rounded-md ' . $active . '"'], $page_link);
+                            } else {
+                                echo str_replace('<a', '<a class="px-3 py-2 leading-tight border border-gray-300 rounded-md ' . $active . '"', $page_link);
+                            }
+                            ?>
+                        </li>
+                    <?php endforeach; ?>
+                </ul>
+            </nav>
+        <?php endif; ?>
     </div>
 </div>
 
