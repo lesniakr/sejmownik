@@ -1,6 +1,6 @@
 <?php
 /**
- * Members of Parliament theme functions and definitions
+ * Sejmownik theme functions and definitions
  */
 
 if (!defined('_S_VERSION')) {
@@ -130,146 +130,152 @@ function sejmownik_modify_mp_archive_query($query) {
 add_action('pre_get_posts', 'sejmownik_modify_mp_archive_query');
 
 /**
- * Register ACF Options Page
+ * Register ACF Options Page - Move to init hook to prevent early loading
  */
-if (function_exists('acf_add_options_page')) {
-    acf_add_options_page(array(
-        'page_title'    => 'Opcje motywu',
-        'menu_title'    => 'Opcje motywu',
-        'menu_slug'     => 'theme-options',
-        'capability'    => 'edit_posts',
-        'redirect'      => false,
-        'icon_url'      => 'dashicons-admin-customizer',
-        'position'      => 60
-    ));
+function sejmownik_register_acf_options_page() {
+    if (function_exists('acf_add_options_page')) {
+        acf_add_options_page(array(
+            'page_title'    => 'Opcje motywu',
+            'menu_title'    => 'Opcje motywu',
+            'menu_slug'     => 'theme-options',
+            'capability'    => 'edit_posts',
+            'redirect'      => false,
+            'icon_url'      => 'dashicons-admin-customizer',
+            'position'      => 60
+        ));
+    }
 }
+add_action('init', 'sejmownik_register_acf_options_page', 20); // Use priority 20 to ensure ACF is loaded
 
 /**
- * Register ACF Fields
+ * Register ACF Fields - Move to init hook
  */
-if (function_exists('acf_add_local_field_group')) {
-    // Footer Settings
-    acf_add_local_field_group(array(
-        'key' => 'group_footer_settings',
-        'title' => 'Ustawienia stopki',
-        'fields' => array(
-            array(
-                'key' => 'field_footer_general_tab',
-                'label' => 'Informacje ogólne',
-                'name' => '',
-                'type' => 'tab',
-            ),
-            array(
-                'key' => 'field_footer_logo',
-                'label' => 'Logo w stopce',
-                'name' => 'footer_logo',
-                'type' => 'image',
-                'return_format' => 'array',
-                'preview_size' => 'medium',
-                'library' => 'all',
-                'instructions' => 'Logotyp wyświetlany w lewej kolumnie stopki nad opisem',
-            ),
-            array(
-                'key' => 'field_footer_description',
-                'label' => 'Opis w stopce',
-                'name' => 'footer_description',
-                'type' => 'textarea',
-                'rows' => 3,
-                'default_value' => 'Serwis informacyjny poświęcony posłom na Sejm Rzeczypospolitej Polskiej.',
-                'instructions' => 'Tekst wyświetlany w lewej kolumnie stopki',
-            ),
-            array(
-                'key' => 'field_footer_contact_tab',
-                'label' => 'Informacje kontaktowe',
-                'name' => '',
-                'type' => 'tab',
-            ),
-            array(
-                'key' => 'field_footer_contact_heading',
-                'label' => 'Nagłówek sekcji kontakt',
-                'name' => 'footer_contact_heading',
-                'type' => 'text',
-                'default_value' => 'Kontakt',
-                'instructions' => 'Tekst wyświetlany jako nagłówek sekcji kontaktowej',
-            ),
-            array(
-                'key' => 'field_footer_address',
-                'label' => 'Adres',
-                'name' => 'footer_address',
-                'type' => 'textarea',
-                'rows' => 2,
-                'default_value' => 'ul. Wiejska 1, 00-902 Warszawa',
-            ),
-            array(
-                'key' => 'field_footer_phone',
-                'label' => 'Telefon',
-                'name' => 'footer_phone',
-                'type' => 'text',
-                'default_value' => '+48 22 694 10 00',
-            ),
-            array(
-                'key' => 'field_footer_email',
-                'label' => 'Email',
-                'name' => 'footer_email',
-                'type' => 'email',
-                'default_value' => 'info@sejm.gov.pl',
-            ),
-            array(
-                'key' => 'field_footer_social_tab',
-                'label' => 'Media społecznościowe',
-                'name' => '',
-                'type' => 'tab',
-            ),
-            array(
-                'key' => 'field_footer_social_heading',
-                'label' => 'Nagłówek sekcji',
-                'name' => 'footer_social_heading',
-                'type' => 'text',
-                'default_value' => 'Śledź nas:',
-                'instructions' => 'Tekst wyświetlany nad ikonami mediów społecznościowych',
-            ),
-            array(
-                'key' => 'field_footer_social_media',
-                'label' => 'Media społecznościowe',
-                'name' => 'footer_social_media',
-                'type' => 'repeater',
-                'layout' => 'table',
-                'button_label' => 'Dodaj media społecznościowe',
-                'sub_fields' => array(
-                    array(
-                        'key' => 'field_footer_social_media_icon',
-                        'label' => 'Ikona (klasa FontAwesome)',
-                        'name' => 'icon',
-                        'type' => 'text',
-                        'instructions' => 'Wprowadź klasę Font Awesome, np. fab fa-facebook',
-                        'required' => 1,
-                    ),
-                    array(
-                        'key' => 'field_footer_social_media_url',
-                        'label' => 'URL',
-                        'name' => 'url',
-                        'type' => 'url',
-                        'required' => 1,
-                    ),
-                ),
-            ),
-        ),
-        'location' => array(
-            array(
+function sejmownik_register_acf_fields() {
+    if (function_exists('acf_add_local_field_group')) {
+        // Footer Settings
+        acf_add_local_field_group(array(
+            'key' => 'group_footer_settings',
+            'title' => 'Ustawienia stopki',
+            'fields' => array(
                 array(
-                    'param' => 'options_page',
-                    'operator' => '==',
-                    'value' => 'theme-options',
+                    'key' => 'field_footer_general_tab',
+                    'label' => 'Informacje ogólne',
+                    'name' => '',
+                    'type' => 'tab',
+                ),
+                array(
+                    'key' => 'field_footer_logo',
+                    'label' => 'Logo w stopce',
+                    'name' => 'footer_logo',
+                    'type' => 'image',
+                    'return_format' => 'array',
+                    'preview_size' => 'medium',
+                    'library' => 'all',
+                    'instructions' => 'Logotyp wyświetlany w lewej kolumnie stopki nad opisem',
+                ),
+                array(
+                    'key' => 'field_footer_description',
+                    'label' => 'Opis w stopce',
+                    'name' => 'footer_description',
+                    'type' => 'textarea',
+                    'rows' => 3,
+                    'default_value' => 'Serwis informacyjny poświęcony posłom na Sejm Rzeczypospolitej Polskiej.',
+                    'instructions' => 'Tekst wyświetlany w lewej kolumnie stopki',
+                ),
+                array(
+                    'key' => 'field_footer_contact_tab',
+                    'label' => 'Informacje kontaktowe',
+                    'name' => '',
+                    'type' => 'tab',
+                ),
+                array(
+                    'key' => 'field_footer_contact_heading',
+                    'label' => 'Nagłówek sekcji kontakt',
+                    'name' => 'footer_contact_heading',
+                    'type' => 'text',
+                    'default_value' => 'Kontakt',
+                    'instructions' => 'Tekst wyświetlany jako nagłówek sekcji kontaktowej',
+                ),
+                array(
+                    'key' => 'field_footer_address',
+                    'label' => 'Adres',
+                    'name' => 'footer_address',
+                    'type' => 'textarea',
+                    'rows' => 2,
+                    'default_value' => 'ul. Wiejska 1, 00-902 Warszawa',
+                ),
+                array(
+                    'key' => 'field_footer_phone',
+                    'label' => 'Telefon',
+                    'name' => 'footer_phone',
+                    'type' => 'text',
+                    'default_value' => '+48 22 694 10 00',
+                ),
+                array(
+                    'key' => 'field_footer_email',
+                    'label' => 'Email',
+                    'name' => 'footer_email',
+                    'type' => 'email',
+                    'default_value' => 'info@sejm.gov.pl',
+                ),
+                array(
+                    'key' => 'field_footer_social_tab',
+                    'label' => 'Media społecznościowe',
+                    'name' => '',
+                    'type' => 'tab',
+                ),
+                array(
+                    'key' => 'field_footer_social_heading',
+                    'label' => 'Nagłówek sekcji',
+                    'name' => 'footer_social_heading',
+                    'type' => 'text',
+                    'default_value' => 'Śledź nas:',
+                    'instructions' => 'Tekst wyświetlany nad ikonami mediów społecznościowych',
+                ),
+                array(
+                    'key' => 'field_footer_social_media',
+                    'label' => 'Media społecznościowe',
+                    'name' => 'footer_social_media',
+                    'type' => 'repeater',
+                    'layout' => 'table',
+                    'button_label' => 'Dodaj media społecznościowe',
+                    'sub_fields' => array(
+                        array(
+                            'key' => 'field_footer_social_media_icon',
+                            'label' => 'Ikona (klasa FontAwesome)',
+                            'name' => 'icon',
+                            'type' => 'text',
+                            'instructions' => 'Wprowadź klasę Font Awesome, np. fab fa-facebook',
+                            'required' => 1,
+                        ),
+                        array(
+                            'key' => 'field_footer_social_media_url',
+                            'label' => 'URL',
+                            'name' => 'url',
+                            'type' => 'url',
+                            'required' => 1,
+                        ),
+                    ),
                 ),
             ),
-        ),
-        'menu_order' => 0,
-        'position' => 'normal',
-        'style' => 'default',
-        'label_placement' => 'top',
-        'instruction_placement' => 'label',
-        'hide_on_screen' => '',
-        'active' => true,
-        'description' => '',
-    ));
+            'location' => array(
+                array(
+                    array(
+                        'param' => 'options_page',
+                        'operator' => '==',
+                        'value' => 'theme-options',
+                    ),
+                ),
+            ),
+            'menu_order' => 0,
+            'position' => 'normal',
+            'style' => 'default',
+            'label_placement' => 'top',
+            'instruction_placement' => 'label',
+            'hide_on_screen' => '',
+            'active' => true,
+            'description' => '',
+        ));
+    }
 }
+add_action('init', 'sejmownik_register_acf_fields', 21); // Priority after options page registration
