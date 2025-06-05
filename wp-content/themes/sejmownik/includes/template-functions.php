@@ -10,12 +10,19 @@
  * 
  * @param int $post_id Post ID (optional, defaults to current post)
  * @param string $size Featured image size (small, medium, large, etc.)
- * @param array $attr Additional image attributes
+ * @param string|array $attr Additional image attributes or CSS class as string
  * @return void
  */
 function mp_display_photo($post_id = null, $size = 'medium', $attr = array()) {
     if (null === $post_id) {
         $post_id = get_the_ID();
+    }
+    
+    // Handle string attributes (convert string to class attribute)
+    if (is_string($attr) && !empty($attr)) {
+        $attr = array('class' => $attr);
+    } elseif (!is_array($attr)) {
+        $attr = array();
     }
     
     // Check for featured image
@@ -35,6 +42,12 @@ function mp_display_photo($post_id = null, $size = 'medium', $attr = array()) {
                 'alt' => get_the_title($post_id),
                 'class' => 'mp-photo api-photo',
             );
+            
+            // If attr has a class, append it to the default class
+            if (isset($attr['class'])) {
+                $default_attr['class'] .= ' ' . $attr['class'];
+                unset($attr['class']);
+            }
             
             // Merge with custom attributes
             $img_attr = array_merge($default_attr, $attr);
@@ -56,6 +69,12 @@ function mp_display_photo($post_id = null, $size = 'medium', $attr = array()) {
         'alt' => get_the_title($post_id),
         'class' => 'mp-photo placeholder',
     );
+    
+    // If attr has a class, append it to the default class
+    if (isset($attr['class'])) {
+        $default_attr['class'] .= ' ' . $attr['class'];
+        unset($attr['class']);
+    }
     
     // Merge with custom attributes
     $img_attr = array_merge($default_attr, $attr);
