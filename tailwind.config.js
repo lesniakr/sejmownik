@@ -11,6 +11,8 @@ module.exports = {
         montserrat: ['Montserrat', 'sans-serif'],
       },
       colors: {
+        'parlament-blue': '#0a3868',
+        'parlament-red': '#d2232a',
         'parlament-gold': '#f0c14b',
       },
       backgroundImage: {
