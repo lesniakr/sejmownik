@@ -621,6 +621,10 @@ h1, h2, h3, h4, h5, h6 {
   top: 0.75rem;
 }
 
+.z-10 {
+  z-index: 10;
+}
+
 .col-span-full {
   grid-column: 1 / -1;
 }
@@ -687,6 +691,14 @@ h1, h2, h3, h4, h5, h6 {
   margin-left: 0.25rem;
 }
 
+.ml-0 {
+  margin-left: 0px;
+}
+
+.block {
+  display: block;
+}
+
 .inline-block {
   display: inline-block;
 }
@@ -727,6 +739,10 @@ h1, h2, h3, h4, h5, h6 {
   height: 0.75rem;
 }
 
+.h-5 {
+  height: 1.25rem;
+}
+
 .w-12 {
   width: 3rem;
 }
@@ -737,6 +753,10 @@ h1, h2, h3, h4, h5, h6 {
 
 .w-3 {
   width: 0.75rem;
+}
+
+.w-5 {
+  width: 1.25rem;
 }
 
 .max-w-2xl {
@@ -789,6 +809,18 @@ h1, h2, h3, h4, h5, h6 {
   margin-left: calc(0.25rem * calc(1 - var(--tw-space-x-reverse)));
 }
 
+.-space-x-px > :not([hidden]) ~ :not([hidden]) {
+  --tw-space-x-reverse: 0;
+  margin-right: calc(-1px * var(--tw-space-x-reverse));
+  margin-left: calc(-1px * calc(1 - var(--tw-space-x-reverse)));
+}
+
+.space-x-2 > :not([hidden]) ~ :not([hidden]) {
+  --tw-space-x-reverse: 0;
+  margin-right: calc(0.5rem * var(--tw-space-x-reverse));
+  margin-left: calc(0.5rem * calc(1 - var(--tw-space-x-reverse)));
+}
+
 .overflow-hidden {
   overflow: hidden;
 }
@@ -807,6 +839,16 @@ h1, h2, h3, h4, h5, h6 {
 
 .rounded-md {
   border-radius: 0.375rem;
+}
+
+.rounded-l-lg {
+  border-top-left-radius: 0.5rem;
+  border-bottom-left-radius: 0.5rem;
+}
+
+.rounded-r-lg {
+  border-top-right-radius: 0.5rem;
+  border-bottom-right-radius: 0.5rem;
 }
 
 .border {
@@ -830,6 +872,11 @@ h1, h2, h3, h4, h5, h6 {
 .border-gray-200 {
   --tw-border-opacity: 1;
   border-color: rgb(229 231 235 / var(--tw-border-opacity, 1));
+}
+
+.border-parlament-blue {
+  --tw-border-opacity: 1;
+  border-color: rgb(10 56 104 / var(--tw-border-opacity, 1));
 }
 
 .bg-gray-50 {
@@ -942,6 +989,10 @@ h1, h2, h3, h4, h5, h6 {
   padding-top: 1.5rem;
 }
 
+.pb-4 {
+  padding-bottom: 1rem;
+}
+
 .text-center {
   text-align: center;
 }
@@ -990,6 +1041,10 @@ h1, h2, h3, h4, h5, h6 {
 
 .not-italic {
   font-style: normal;
+}
+
+.leading-tight {
+  line-height: 1.25;
 }
 
 .text-gray-400 {
@@ -1085,6 +1140,11 @@ h1, h2, h3, h4, h5, h6 {
 .hover\:bg-red-800:hover {
   --tw-bg-opacity: 1;
   background-color: rgb(153 27 27 / var(--tw-bg-opacity, 1));
+}
+
+.hover\:bg-gray-100:hover {
+  --tw-bg-opacity: 1;
+  background-color: rgb(243 244 246 / var(--tw-bg-opacity, 1));
 }
 
 .hover\:text-parlament-gold:hover {
