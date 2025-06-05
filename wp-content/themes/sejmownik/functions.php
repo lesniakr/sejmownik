@@ -42,14 +42,12 @@ add_action('after_setup_theme', 'sejmownik_setup');
  * Enqueue scripts and styles.
  */
 function sejmownik_scripts() {
+    // Enqueue main CSS
+    wp_enqueue_style('sejmownik-main', get_template_directory_uri() . '/assets/css/main.css', array(), wp_get_theme()->get('Version'));
+    
     // Enqueue theme's main stylesheet
     wp_enqueue_style('sejmownik-style', get_stylesheet_uri(), array(), wp_get_theme()->get('Version'));
-    
-    // Enqueue compiled Tailwind CSS
-    wp_enqueue_style('sejmownik-tailwind', get_template_directory_uri() . '/dist/css/tailwind.css', array(), wp_get_theme()->get('Version'));
-    
-    // Add any custom JavaScript if needed
-    // wp_enqueue_script('sejmownik-js', get_template_directory_uri() . '/js/script.js', array(), wp_get_theme()->get('Version'), true);
+
 }
 add_action('wp_enqueue_scripts', 'sejmownik_scripts');
 
