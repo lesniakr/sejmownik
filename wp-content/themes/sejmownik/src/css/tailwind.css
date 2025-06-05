@@ -24,8 +24,3 @@
         font-family: 'Montserrat', sans-serif;
     }
 }
-
-/* Custom non-Tailwind styles */
-.parlament-gradient {
-    background-image: linear-gradient(to right, #d2232a, #96172e);
-}

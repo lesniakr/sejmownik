@@ -4,8 +4,8 @@
   "description": "WordPress theme for displaying Polish parliament members",
   "main": "index.js",
   "scripts": {
-    "dev": "npx tailwindcss -i ./wp-content/themes/sejmownik/src/css/tailwind.css -o ./wp-content/themes/sejmownik/dist/css/tailwind.css --watch",
-    "build": "npx tailwindcss -i ./wp-content/themes/sejmownik/src/css/tailwind.css -o ./wp-content/themes/sejmownik/dist/css/tailwind.css --minify"
+    "dev": "npx tailwindcss -i ./wp-content/themes/sejmownik/src/css/tailwind.css -o ./wp-content/themes/sejmownik/assets/css/main.css --watch",
+    "build": "npx tailwindcss -i ./wp-content/themes/sejmownik/src/css/tailwind.css -o ./wp-content/themes/sejmownik/assets/css/main.css --minify"
   },
   "keywords": [
     "wordpress",

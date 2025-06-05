@@ -7,9 +7,6 @@ Description: Responsywny motyw służący do wyświetlania członków parlamentu
 Version: 1.0
 */
 
-/* Custom styles not covered by Tailwind */
 .parlament-gradient {
-  background-image: linear-gradient(to right, #d2232a, #96172e);
+    background: linear-gradient(135deg, #0a3868 0%, #d52b1e 100%);
 }
-
-/* Any additional custom CSS that might be needed but not possible with Tailwind classes */

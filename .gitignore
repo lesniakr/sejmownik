@@ -1,2 +1,43 @@
+# Dependencies
 node_modules/
+# Optional: uncomment if you want to ignore package-lock.json
+# package-lock.json
+
+# WordPress specific
+wp-config.php
+wp-content/uploads/
+wp-content/upgrade/
+wp-content/backup-db/
+wp-content/updraft/
+wp-content/backupwordpress-*/
+wp-content/managewp/backups/
+wp-content/advanced-cache.php
+wp-content/wp-cache-config.php
+wp-content/cache/
+wp-content/debug.log
+
+# No longer needed dist directory
+wp-content/themes/sejmownik/dist/
+
+# Environment files
+.env
+.env.*
+!.env.example
+
+# OS generated files
 .DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Editor directories and files
+.idea/
+.vscode/
+*.sublime-workspace
+*.sublime-project
+
+# Log files
+*.log
