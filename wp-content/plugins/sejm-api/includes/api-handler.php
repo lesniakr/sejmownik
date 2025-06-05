@@ -440,7 +440,6 @@ class MP_API_Handler {
             }
         }
         
-        // District data
         if (isset($mp_details['districtName'])) {
             update_field('district', $mp_details['districtName'], $post_id);
         }
@@ -455,6 +454,38 @@ class MP_API_Handler {
         
         if (isset($mp_details['voivodeship'])) {
             update_field('voivodeship', $mp_details['voivodeship'], $post_id);
+        }
+        
+        if (isset($mp_details['birthDate'])) {
+            update_field('birthDate', $mp_details['birthDate'], $post_id);
+        }
+        
+        if (isset($mp_details['birthLocation'])) {
+            update_field('birthLocation', $mp_details['birthLocation'], $post_id);
+        }
+        
+        if (isset($mp_details['educationLevel'])) {
+            update_field('educationLevel', $mp_details['educationLevel'], $post_id);
+        }
+        
+        if (isset($mp_details['profession'])) {
+            update_field('profession', $mp_details['profession'], $post_id);
+        }
+        
+        if (isset($mp_details['numberOfVotes'])) {
+            update_field('numberOfVotes', $mp_details['numberOfVotes'], $post_id);
+        }
+        
+        if (isset($mp_details['active'])) {
+            update_field('active', (bool)$mp_details['active'], $post_id);
+        }
+        
+        if (isset($mp_details['accusativeName'])) {
+            update_field('accusativeName', $mp_details['accusativeName'], $post_id);
+        }
+        
+        if (isset($mp_details['genitiveName'])) {
+            update_field('genitiveName', $mp_details['genitiveName'], $post_id);
         }
         
         return $post_id;
@@ -519,5 +550,72 @@ class MP_API_Handler {
         delete_option('mp_import_stop');
         
         return true;
+    }
+    
+    /**
+     * Get MP details with term and leg information
+     * For use in single MP templates
+     * 
+     * @param string $mp_id MP ID from database
+     * @return array|false MP data array or false on failure
+     */
+    public static function get_mp_term_details($mp_id) {
+        if (empty($mp_id)) {
+            error_log('MP Plugin: Empty MP ID provided to get_mp_term_details');
+            return false;
+        }
+        
+        // Get current term
+        $term = self::get_current_term();
+        if (!$term) {
+            error_log('MP Plugin: Could not determine current term in get_mp_term_details');
+            return false;
+        }
+        
+        // Try different URL formats to find one that works
+        $possible_urls = [
+            self::API_BASE_URL . '/sejm/term/' . $term . '/MP/' . $mp_id,
+            self::API_BASE_URL . '/sejm/term' . $term . '/MP/' . $mp_id
+        ];
+        
+        foreach ($possible_urls as $api_url) {
+            error_log('MP Plugin: Trying URL format: ' . $api_url);
+            
+            $response = wp_remote_get($api_url, array(
+                'timeout' => 30,
+                'headers' => array(
+                    'Accept' => 'application/json',
+                ),
+            ));
+            
+            if (is_wp_error($response)) {
+                error_log('MP Plugin API Error: ' . $response->get_error_message());
+                continue; // Try next URL
+            }
+            
+            $status_code = wp_remote_retrieve_response_code($response);
+            if ($status_code !== 200) {
+                error_log('MP Plugin: URL ' . $api_url . ' returned status ' . $status_code);
+                continue; // Try next URL
+            }
+            
+            // We got a successful response
+            $body = wp_remote_retrieve_body($response);
+            $mp_details = json_decode($body, true);
+            
+            if (json_last_error() !== JSON_ERROR_NONE) {
+                error_log('MP Plugin JSON Error: ' . json_last_error_msg());
+                error_log('MP Plugin: Raw response: ' . substr($body, 0, 500));
+                continue; // Try next URL
+            }
+            
+            // Found working URL
+            error_log('MP Plugin: Successfully retrieved data from ' . $api_url);
+            return $mp_details;
+        }
+        
+        // If we get here, none of the URLs worked
+        error_log('MP Plugin: Failed to retrieve MP details from all attempted URLs');
+        return false;
     }
 }
