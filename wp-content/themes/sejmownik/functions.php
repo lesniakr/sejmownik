@@ -76,12 +76,14 @@ function sejmownik_modify_mp_archive_query($query) {
         
         switch ($sort) {
             case 'name_asc':
-                $query->set('orderby', 'title');
+                $query->set('meta_key', 'last_name');
+                $query->set('orderby', 'meta_value');
                 $query->set('order', 'ASC');
                 break;
                 
             case 'name_desc':
-                $query->set('orderby', 'title');
+                $query->set('meta_key', 'last_name');
+                $query->set('orderby', 'meta_value');
                 $query->set('order', 'DESC');
                 break;
                 
@@ -106,7 +108,8 @@ function sejmownik_modify_mp_archive_query($query) {
                 break;
                 
             default:
-                $query->set('orderby', 'title');
+                $query->set('meta_key', 'last_name');
+                $query->set('orderby', 'meta_value');
                 $query->set('order', 'ASC');
                 break;
         }
