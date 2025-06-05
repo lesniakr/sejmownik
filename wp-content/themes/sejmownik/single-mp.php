@@ -24,6 +24,18 @@ $mp_data = function_exists('get_mp_complete_data') ? get_mp_complete_data() : ar
                     
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-gray-700">
                         <div>
+                            <?php if (!empty($mp_data['first_name'])) : ?>
+                                <p class="mb-2"><span class="font-medium">Imię:</span> 
+                                    <?php echo esc_html($mp_data['first_name']); ?>
+                                </p>
+                            <?php endif; ?>
+
+                            <?php if (!empty($mp_data['last_name'])) : ?>
+                                <p class="mb-2"><span class="font-medium">Nazwisko:</span> 
+                                    <?php echo esc_html($mp_data['last_name']); ?>
+                                </p>
+                            <?php endif; ?>
+
                             <?php if (!empty($mp_data['club'])) : ?>
                                 <p class="mb-2"><span class="font-medium">Klub/Partia:</span> 
                                     <?php echo esc_html($mp_data['club']); ?>
@@ -51,7 +63,9 @@ $mp_data = function_exists('get_mp_complete_data') ? get_mp_complete_data() : ar
                             <?php if (!empty($mp_data['educationLevel'])) : ?>
                                 <p class="mb-2"><span class="font-medium">Wykształcenie:</span> <?php echo esc_html($mp_data['educationLevel']); ?></p>
                             <?php endif; ?>
-                            
+                        </div>
+                        
+                        <div>
                             <?php if (!empty($mp_data['birthDate'])) : ?>
                                 <p class="mb-2"><span class="font-medium">Data urodzenia:</span> <?php echo esc_html(date('d.m.Y', strtotime($mp_data['birthDate']))); ?></p>
                             <?php endif; ?>
@@ -59,9 +73,7 @@ $mp_data = function_exists('get_mp_complete_data') ? get_mp_complete_data() : ar
                             <?php if (!empty($mp_data['birthLocation'])) : ?>
                                 <p class="mb-2"><span class="font-medium">Miejsce urodzenia:</span> <?php echo esc_html($mp_data['birthLocation']); ?></p>
                             <?php endif; ?>
-                        </div>
-                        
-                        <div>
+                            
                             <?php if (!empty($mp_data['email'])) : ?>
                                 <p class="mb-2">
                                     <span class="font-medium">E-mail:</span> 
