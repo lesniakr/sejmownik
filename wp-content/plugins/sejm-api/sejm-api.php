@@ -92,3 +92,82 @@ function mp_generate_default_id($post_id, $post, $update) {
     }
 }
 add_action('save_post', 'mp_generate_default_id', 20, 3);
+
+/**
+ * Get complete MP data for display in templates
+ * 
+ * @param int $post_id Post ID (optional, defaults to current post)
+ * @return array Complete MP data including API data
+ */
+function get_mp_complete_data($post_id = null) {
+    if (null === $post_id) {
+        $post_id = get_the_ID();
+    }
+    
+    // Get basic MP data from post meta/ACF
+    $mp_data = array(
+        'title' => get_the_title($post_id),
+        'mp_id' => get_field('mp_id', $post_id),
+        'first_name' => get_field('first_name', $post_id),
+        'last_name' => get_field('last_name', $post_id),
+        'club' => get_field('club', $post_id),
+        'district' => get_field('district', $post_id),
+        'district_number' => get_field('district_number', $post_id),
+        'email' => get_field('email', $post_id),
+        'voivodeship' => get_field('voivodeship', $post_id),
+        'biography' => get_field('biography', $post_id),
+        'active' => get_field('active', $post_id),
+        'birthDate' => get_field('birthDate', $post_id),
+        'birthLocation' => get_field('birthLocation', $post_id),
+        'educationLevel' => get_field('educationLevel', $post_id),
+        'profession' => get_field('profession', $post_id),
+        'numberOfVotes' => get_field('numberOfVotes', $post_id),
+        'accusativeName' => get_field('accusativeName', $post_id),
+        'genitiveName' => get_field('genitiveName', $post_id),
+    );
+    
+    // Try to get additional data from API if mp_id exists
+    if (!empty($mp_data['mp_id'])) {
+        // Skip API call for manually created MPs (ID starts with 'm')
+        $is_manual_mp = substr($mp_data['mp_id'], 0, 1) === 'm';
+        
+        if (!$is_manual_mp) {
+            $api_data = false;
+            
+            // Check if the method exists before calling it
+            if (method_exists('MP_API_Handler', 'get_mp_term_details')) {
+                $api_data = MP_API_Handler::get_mp_term_details($mp_data['mp_id']);
+            } else {
+                error_log('MP Plugin: get_mp_term_details method not found in MP_API_Handler class');
+                
+                // Fallback to get_mp_details if available
+                if (method_exists('MP_API_Handler', 'get_mp_details')) {
+                    $api_data = MP_API_Handler::get_mp_details($mp_data['mp_id']);
+                    error_log('MP Plugin: Using fallback get_mp_details method');
+                }
+            }
+            
+            if ($api_data && !is_wp_error($api_data)) {
+                // Add API-specific fields to our data array
+                $api_fields = array(
+                    'birthDate', 'birthLocation', 'educationLevel',
+                    'profession', 'secondName', 'numberOfVotes',
+                    'accusativeName', 'genitiveName'
+                );
+                
+                // Handle special case for boolean fields
+                if (isset($api_data['active']) && !isset($mp_data['active'])) {
+                    $mp_data['active'] = $api_data['active'];
+                }
+                
+                foreach ($api_fields as $field) {
+                    if (isset($api_data[$field]) && empty($mp_data[$field])) {
+                        $mp_data[$field] = $api_data[$field];
+                    }
+                }
+            }
+        }
+    }
+    
+    return $mp_data;
+}

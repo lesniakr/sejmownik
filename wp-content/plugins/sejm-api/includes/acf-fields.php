@@ -13,6 +13,14 @@ class MP_ACF {
                 'key' => 'group_mp_details',
                 'title' => 'Szczegóły Posła',
                 'fields' => array(
+                    // Basic Identification Tab
+                    array(
+                        'key' => 'field_mp_basic_tab',
+                        'label' => 'Podstawowe dane',
+                        'name' => '',
+                        'type' => 'tab',
+                        'placement' => 'top',
+                    ),
                     array(
                         'key' => 'field_mp_id',
                         'label' => 'ID posła',
@@ -33,6 +41,24 @@ class MP_ACF {
                         'type' => 'text',
                     ),
                     array(
+                        'key' => 'field_mp_active',
+                        'label' => 'Aktywny',
+                        'name' => 'active',
+                        'type' => 'true_false',
+                        'ui' => 1,
+                        'default_value' => 1,
+                        'instructions' => 'Czy poseł jest aktywny w obecnej kadencji',
+                    ),
+                    
+                    // Parliamentary Information Tab
+                    array(
+                        'key' => 'field_mp_parliament_tab',
+                        'label' => 'Informacje parlamentarne',
+                        'name' => '',
+                        'type' => 'tab',
+                        'placement' => 'top',
+                    ),
+                    array(
                         'key' => 'field_mp_club',
                         'label' => 'Klub/Partia',
                         'name' => 'club',
@@ -51,22 +77,96 @@ class MP_ACF {
                         'type' => 'number',
                     ),
                     array(
-                        'key' => 'field_mp_email',
-                        'label' => 'Adres e-mail',
-                        'name' => 'email',
-                        'type' => 'email',
-                    ),
-                    array(
                         'key' => 'field_mp_voivodeship',
                         'label' => 'Województwo',
                         'name' => 'voivodeship',
                         'type' => 'text',
                     ),
                     array(
+                        'key' => 'field_mp_number_of_votes',
+                        'label' => 'Liczba głosów',
+                        'name' => 'numberOfVotes',
+                        'type' => 'number',
+                        'instructions' => 'Liczba głosów otrzymanych w wyborach',
+                    ),
+                    
+                    // Personal Information Tab
+                    array(
+                        'key' => 'field_mp_personal_tab',
+                        'label' => 'Informacje osobiste',
+                        'name' => '',
+                        'type' => 'tab',
+                        'placement' => 'top',
+                    ),
+                    array(
+                        'key' => 'field_mp_birth_date',
+                        'label' => 'Data urodzenia',
+                        'name' => 'birthDate',
+                        'type' => 'date_picker',
+                        'display_format' => 'd.m.Y',
+                        'return_format' => 'Y-m-d',
+                    ),
+                    array(
+                        'key' => 'field_mp_birth_location',
+                        'label' => 'Miejsce urodzenia',
+                        'name' => 'birthLocation',
+                        'type' => 'text',
+                    ),
+                    array(
+                        'key' => 'field_mp_education',
+                        'label' => 'Wykształcenie',
+                        'name' => 'educationLevel',
+                        'type' => 'text',
+                    ),
+                    array(
+                        'key' => 'field_mp_profession',
+                        'label' => 'Zawód',
+                        'name' => 'profession',
+                        'type' => 'text',
+                    ),
+                    
+                    // Contact Information Tab
+                    array(
+                        'key' => 'field_mp_contact_tab',
+                        'label' => 'Dane kontaktowe',
+                        'name' => '',
+                        'type' => 'tab',
+                        'placement' => 'top',
+                    ),
+                    array(
+                        'key' => 'field_mp_email',
+                        'label' => 'Adres e-mail',
+                        'name' => 'email',
+                        'type' => 'email',
+                    ),
+                    
+                    // Additional Information Tab
+                    array(
+                        'key' => 'field_mp_additional_tab',
+                        'label' => 'Dodatkowe informacje',
+                        'name' => '',
+                        'type' => 'tab',
+                        'placement' => 'top',
+                    ),
+                    array(
                         'key' => 'field_mp_bio',
                         'label' => 'Biografia',
                         'name' => 'biography',
                         'type' => 'wysiwyg',
+                    ),
+                    array(
+                        'key' => 'field_mp_accusative',
+                        'label' => 'Forma w bierniku',
+                        'name' => 'accusativeName',
+                        'type' => 'text',
+                        'instructions' => 'Imię i nazwisko w formie biernika (kogo? co?)',
+                    ),
+                    array(
+                        'key' => 'field_mp_genitive',
+                        'label' => 'Forma w dopełniaczu',
+                        'name' => 'genitiveName',
+                        'type' => 'text',
+                        'instructions' => 'Imię i nazwisko w formie dopełniacza (kogo? czego?)',
                     ),
                 ),
                 'location' => array(
