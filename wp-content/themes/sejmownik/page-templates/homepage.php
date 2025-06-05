@@ -81,17 +81,6 @@ get_header();
         </div>
     </section>
     
-    <div>
-        <?php
-        echo paginate_links(array(
-            'total' => $mp_query->max_num_pages,
-            'current' => $paged,
-            'prev_text' => '&laquo; Poprzednia',
-            'next_text' => 'Następna &raquo;',
-        ));
-        wp_reset_postdata();
-        ?>
-    </div>
 </div>
 
 <?php get_footer(); ?>
