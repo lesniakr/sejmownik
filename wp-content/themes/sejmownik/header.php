@@ -48,6 +48,7 @@
                 <form role="search" method="get" action="<?php echo esc_url(home_url('/')); ?>">
                     <input type="text" name="s" placeholder="Wyszukaj posła..." 
                            class="pl-10 pr-4 py-2 rounded-full w-full md:w-64 focus:outline-none focus:ring-2 focus:ring-parlament-gold">
+                    <input type="hidden" name="post_type" value="mp">
                     <i class="fas fa-search absolute left-3 top-3 text-gray-400"></i>
                 </form>
             </div>

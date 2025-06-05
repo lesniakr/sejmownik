@@ -154,6 +154,31 @@ if (function_exists('acf_add_local_field_group')) {
         'title' => 'Ustawienia stopki',
         'fields' => array(
             array(
+                'key' => 'field_footer_general_tab',
+                'label' => 'Informacje ogólne',
+                'name' => '',
+                'type' => 'tab',
+            ),
+            array(
+                'key' => 'field_footer_logo',
+                'label' => 'Logo w stopce',
+                'name' => 'footer_logo',
+                'type' => 'image',
+                'return_format' => 'array',
+                'preview_size' => 'medium',
+                'library' => 'all',
+                'instructions' => 'Logotyp wyświetlany w lewej kolumnie stopki nad opisem',
+            ),
+            array(
+                'key' => 'field_footer_description',
+                'label' => 'Opis w stopce',
+                'name' => 'footer_description',
+                'type' => 'textarea',
+                'rows' => 3,
+                'default_value' => 'Serwis informacyjny poświęcony posłom na Sejm Rzeczypospolitej Polskiej.',
+                'instructions' => 'Tekst wyświetlany w lewej kolumnie stopki',
+            ),
+            array(
                 'key' => 'field_footer_contact_tab',
                 'label' => 'Informacje kontaktowe',
                 'name' => '',
