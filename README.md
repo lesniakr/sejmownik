@@ -1,15 +1,17 @@
-# Members of Parliament
+# Sejmownik (Members of Parliament)
 
-A WordPress theme and plugin combination for displaying information about Members of Parliament. This project provides a customized WordPress installation to showcase parliamentary representatives, their details, and activities.
+A WordPress theme and plugin combination for displaying information about Members of Parliament. This project provides a customized WordPress installation to showcase parliamentary representatives, their details, activities, and voting records.
 
 ## Features
 
 - Custom post type for Members of Parliament (MPs)
 - Dedicated templates for displaying MPs information
-- Archive page listing all MPs
+- Archive page listing all MPs with sorting options
 - Individual MP profile pages with detailed information
+- MP voting records directly from the Sejm API
 - Custom fields for storing MP details (constituency, party affiliation, etc.)
-- Responsive design
+- Responsive design with Tailwind CSS
+- ACF integration for structured data
 
 ## Installation
 
@@ -20,28 +22,41 @@ A WordPress theme and plugin combination for displaying information about Member
 
 2. Activate the "Sejmownik" theme in WordPress admin under Appearance > Themes
 
-3. Activate the "Members of Parliament" plugin in WordPress admin under Plugins
+3. Activate the "Posłowie Parlamentu" plugin in WordPress admin under Plugins
 
-4. Import MP data or add it manually through the WordPress admin interface
+4. Import MP data through the plugin's admin interface or add it manually
+
+## Plugin Features
+
+The "Posłowie Parlamentu" plugin includes:
+
+- Custom post type for MPs
+- ACF field groups for structured MP data
+- API integration with the official Sejm API (https://api.sejm.gov.pl/)
+- Import tool for fetching MPs directly from the API
+- Admin interface for managing imports
+- WP-CLI commands for bulk operations
+- MP voting records integration
 
 ## Theme Structure
 
 The Sejmownik theme includes:
 
-- `archive-mp.php` - Template for displaying the list of MPs
-- `single-mp.php` - Template for displaying individual MP profiles
-- Custom homepage template - Can be assigned to any page to display MPs
+- `archive-mp.php` - Template for displaying the list of MPs with sorting options
+- `single-mp.php` - Template for displaying individual MP profiles with details and voting records
+- Homepage template - Can be assigned to any page to display featured MPs
+- Responsive design using Tailwind CSS
 
 ## Custom Fields
 
 The MP post type includes the following custom fields:
 
-- Club/Party affiliation
-- District information
-- Voivodeship (province)
-- Email contact
-- MP ID (reference ID)
-- Committee memberships and roles
+- Basic identification (ID, first name, last name, active status)
+- Parliamentary information (club/party, district, votes)
+- Personal information (birth date, birth location, education, profession)
+- Contact information (email)
+- Additional information (biography, grammatical name forms)
+- Voting records (fetched directly from the API)
 
 ## Creating a Homepage
 
@@ -53,15 +68,23 @@ The MP post type includes the following custom fields:
 
 You can customize the appearance and behavior of the theme by:
 
-- Editing the theme CSS
-- Adding/modifying templates
-- Adjusting the custom field structure
+- Editing the theme options in the WordPress admin
+- Modifying the Tailwind CSS styles
+- Adjusting the ACF field structure
+- Creating custom templates
+
+## Development Notes
+
+- ACF fields are registered during the `init` hook to prevent translation loading issues
+- API interactions are optimized for performance and reliability
+- The plugin uses WordPress transients to cache API data when appropriate
+- The theme is built with performance and accessibility in mind
 
 ## Credits
 
 - Developed by: Rafał Leśniak
 - Website: [https://rafallesniak.com/](https://rafallesniak.com/)
-- Theme: Sejmownik
+- Sejm API: [https://api.sejm.gov.pl/](https://api.sejm.gov.pl/)
 
 ## License
 
