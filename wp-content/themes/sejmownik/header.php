@@ -56,3 +56,50 @@
 </header>
 
 <div id="content" class="site-content">
+    <?php 
+    // Add breadcrumbs to all pages except the homepage
+    if (!is_front_page() && !is_home()): 
+    ?>
+    <div class="container mx-auto px-4 pt-8">
+        <!-- Breadcrumbs navigation -->
+        <nav class="flex mb-6 text-sm" aria-label="Breadcrumb">
+            <ol class="inline-flex items-center space-x-1 md:space-x-3">
+                <li class="inline-flex items-center">
+                    <a href="<?php echo esc_url(home_url('/')); ?>" class="inline-flex items-center text-gray-700 hover:text-parlament-blue">
+                        <svg class="w-3 h-3 mr-2" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z"></path>
+                        </svg>
+                        Strona główna
+                    </a>
+                </li>
+                <li aria-current="page">
+                    <div class="flex items-center">
+                        <svg class="w-3 h-3 text-gray-400 mx-1" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                            <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path>
+                        </svg>
+                        <span class="text-gray-500 ml-1 md:ml-2 font-medium">
+                            <?php 
+                            // Display the appropriate title based on page type
+                            if (is_404()) {
+                                echo 'Nie znaleziono strony';
+                            } elseif (is_archive()) {
+                                if (is_post_type_archive('mp')) {
+                                    post_type_archive_title();
+                                } else {
+                                    the_archive_title();
+                                }
+                            } elseif (is_single() || is_page()) {
+                                the_title();
+                            } elseif (is_search()) {
+                                echo 'Wyniki wyszukiwania';
+                            } else {
+                                echo get_the_title();
+                            }
+                            ?>
+                        </span>
+                    </div>
+                </li>
+            </ol>
+        </nav>
+    </div>
+    <?php endif; ?>

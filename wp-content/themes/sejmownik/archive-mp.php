@@ -9,7 +9,8 @@ get_header();
 $current_sort = isset($_GET['sort']) ? sanitize_text_field($_GET['sort']) : 'name_asc';
 ?>
 
-<div class="container mx-auto px-4 py-8">
+<div class="container mx-auto px-4 pb-8 pt-4">
+    
     <div class="flex flex-col md:flex-row justify-between items-center mb-8">
         <h1 class="text-3xl font-bold text-center md:text-left mb-4 md:mb-0"><?php post_type_archive_title(); ?></h1>
         
