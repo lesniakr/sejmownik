@@ -137,8 +137,8 @@ $mp_data = function_exists('get_mp_complete_data') ? get_mp_complete_data() : ar
                 <div class="flex flex-wrap items-center space-x-3">
                     <span class="text-gray-600 text-sm">
                         Udostępnij profil 
-                        <?php if (!empty($mp_data['accusativeName'])) : ?>
-                            <?php echo esc_html($mp_data['accusativeName']); ?>
+                        <?php if (!empty($mp_data['genitiveName'])) : ?>
+                            <?php echo esc_html($mp_data['genitiveName']); ?>
                         <?php endif; ?>
                     </span>
                     <div class="flex items-center space-x-3">
