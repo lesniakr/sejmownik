@@ -19,6 +19,7 @@ class MP_Admin {
         add_action('wp_ajax_mp_emergency_stop', array(__CLASS__, 'ajax_emergency_stop'));
         add_action('wp_ajax_mp_process_next_batch', array(__CLASS__, 'ajax_process_next_batch'));
         add_action('wp_ajax_mp_get_import_logs', array(__CLASS__, 'ajax_get_import_logs'));
+        add_action('wp_ajax_mp_clear_import_logs', array(__CLASS__, 'ajax_clear_import_logs'));
     }
     
     /**
@@ -157,7 +158,12 @@ class MP_Admin {
                 
                 <!-- Import Logs Section -->
                 <div class="mp-import-logs">
-                    <h3><span class="dashicons dashicons-list-view"></span> Logi importu</h3>
+                    <h3>
+                        <span class="dashicons dashicons-list-view"></span> Logi importu
+                        <button id="mp-clear-logs" class="button button-secondary button-small" style="float:right;">
+                            <span class="dashicons dashicons-trash" style="margin-top:3px;"></span> Wyczyść logi
+                        </button>
+                    </h3>
                     <div class="mp-logs-container" id="mp-logs-container">
                         <?php if (empty($import_logs)) : ?>
                             <p class="mp-no-logs" id="mp-no-logs">Nie znaleziono logów importu.</p>
@@ -386,6 +392,52 @@ class MP_Admin {
             'logs' => $logs,
             'empty' => empty($logs)
         ));
+    }
+    
+    /**
+     * AJAX handler to clear import logs
+     */
+    public static function ajax_clear_import_logs() {
+        check_ajax_referer('mp_admin_nonce', 'nonce');
+        
+        if (!current_user_can('manage_options')) {
+            wp_send_json_error('Insufficient permissions');
+            return;
+        }
+        
+        $result = self::clear_import_logs();
+        
+        wp_send_json(array(
+            'success' => $result,
+            'message' => $result ? 'Logi zostały wyczyszczone.' : 'Nie udało się wyczyścić logów.'
+        ));
+    }
+    
+    /**
+     * Clear import logs
+     * 
+     * @return bool True if logs were cleared, false otherwise
+     */
+    private static function clear_import_logs() {
+        $log_file = WP_CONTENT_DIR . '/debug.log';
+        
+        if (file_exists($log_file)) {
+            // Read the log file
+            $file_content = file_get_contents($log_file);
+            
+            // Find all lines with "MP Plugin" and remove them
+            $file_content = preg_replace('/\[\d{2}-\w{3}-\d{4} \d{2}:\d{2}:\d{2} UTC\] MP Plugin:.*\n?/', '', $file_content);
+            
+            // Write the modified content back to the file
+            $result = file_put_contents($log_file, $file_content);
+            
+            if ($result !== false) {
+                error_log('MP Plugin: Logs cleared by admin');
+                return true;
+            }
+        }
+        
+        return false;
     }
     
     /**

@@ -58,6 +58,15 @@
                 }
             });
             
+            // Clear logs button handler
+            $(document).on('click', '#mp-clear-logs', function(e) {
+                e.preventDefault();
+                console.log('MP Import: Clear logs button clicked');
+                if (confirm('Czy na pewno chcesz wyczyścić wszystkie logi importu?')) {
+                    clearImportLogs();
+                }
+            });
+            
             // Initial log fetch
             fetchImportLogs();
         }
@@ -372,6 +381,43 @@
             error: function(xhr, status, error) {
                 console.error('MP Import: Błąd podczas zatrzymywania importu:', error);
                 alert('Wystąpił błąd podczas zatrzymywania importu: ' + error);
+            }
+        });
+    }
+    
+    // Clear import logs via AJAX
+    function clearImportLogs() {
+        $.ajax({
+            url: mp_admin.ajax_url,
+            type: 'POST',
+            data: {
+                action: 'mp_clear_import_logs',
+                nonce: mp_admin.nonce
+            },
+            beforeSend: function() {
+                // Disable button and show loading state
+                $('#mp-clear-logs').prop('disabled', true).addClass('button-busy');
+            },
+            success: function(response) {
+                if (response.success) {
+                    console.log('MP Import: Logs cleared successfully');
+                    // Update the logs display to show empty state
+                    updateLogsUI('', true);
+                    
+                    // Show a success message
+                    alert('Logi zostały pomyślnie wyczyszczone.');
+                } else {
+                    console.error('MP Import: Error clearing logs:', response.message);
+                    alert('Błąd podczas czyszczenia logów: ' + response.message);
+                }
+            },
+            error: function(xhr, status, error) {
+                console.error('MP Import: Error clearing logs:', error);
+                alert('Błąd podczas czyszczenia logów: ' + error);
+            },
+            complete: function() {
+                // Re-enable button and remove loading state
+                $('#mp-clear-logs').prop('disabled', false).removeClass('button-busy');
             }
         });
     }
