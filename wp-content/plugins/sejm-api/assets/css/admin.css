@@ -138,3 +138,57 @@
     background-color: #218838;
     border-color: #1e7e34;
 }
+
+/* Logs section styles */
+.mp-import-logs {
+    margin-top: 20px;
+    border-top: 1px solid #ddd;
+    padding-top: 15px;
+}
+
+.mp-logs-container {
+    margin-top: 10px;
+}
+
+.mp-logs-wrapper {
+    background: #f0f0f1;
+    border: 1px solid #ccd0d4;
+    border-radius: 4px;
+    max-height: 300px;
+    overflow-y: auto;
+}
+
+.mp-logs-content {
+    padding: 10px;
+    margin: 0;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    font-family: monospace;
+    font-size: 12px;
+    line-height: 1.4;
+}
+
+.mp-no-logs {
+    font-style: italic;
+    color: #777;
+}
+
+.mp-logs-info {
+    margin-top: 5px;
+    font-size: 11px;
+    color: #777;
+    text-align: right;
+}
+
+/* Auto-scrolling animation indicator */
+.mp-logs-wrapper.auto-scrolling:after {
+    content: 'Auto-scrolling';
+    position: absolute;
+    top: 5px;
+    right: 10px;
+    background: rgba(0,0,0,0.5);
+    color: white;
+    padding: 2px 6px;
+    border-radius: 3px;
+    font-size: 10px;
+}

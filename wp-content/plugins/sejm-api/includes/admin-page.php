@@ -18,6 +18,7 @@ class MP_Admin {
         add_action('wp_ajax_mp_continue_import', array(__CLASS__, 'ajax_continue_import'));
         add_action('wp_ajax_mp_emergency_stop', array(__CLASS__, 'ajax_emergency_stop'));
         add_action('wp_ajax_mp_process_next_batch', array(__CLASS__, 'ajax_process_next_batch'));
+        add_action('wp_ajax_mp_get_import_logs', array(__CLASS__, 'ajax_get_import_logs'));
     }
     
     /**
@@ -36,6 +37,7 @@ class MP_Admin {
             'ajax_url' => admin_url('admin-ajax.php'),
             'nonce' => wp_create_nonce('mp_admin_nonce'),
             'import_url' => admin_url('edit.php?post_type=mp&page=mp-import'),
+            'log_lines_limit' => self::LOG_LINES_LIMIT,
         ));
         
         wp_enqueue_style('mp-admin-css', plugins_url('/assets/css/admin.css', dirname(__FILE__)), array(), $version);
@@ -82,6 +84,9 @@ class MP_Admin {
             $import_status['total'] = 0;
             $import_status['current'] = 0;
         }
+        
+        // Get recent import logs
+        $import_logs = self::get_import_logs();
         ?>
         <div class="wrap">
             <h1>Importuj członków parlamentu</h1>
@@ -149,6 +154,21 @@ class MP_Admin {
                 <div id="mp-import-error" class="mp-notice mp-notice-error" style="display: none;">
                     <p>Błąd podczas importowania: <span id="mp-error-message"></span></p>
                 </div>
+                
+                <!-- Import Logs Section -->
+                <div class="mp-import-logs">
+                    <h3><span class="dashicons dashicons-list-view"></span> Logi importu</h3>
+                    <div class="mp-logs-container" id="mp-logs-container">
+                        <?php if (empty($import_logs)) : ?>
+                            <p class="mp-no-logs" id="mp-no-logs">Nie znaleziono logów importu.</p>
+                        <?php else : ?>
+                            <div class="mp-logs-wrapper">
+                                <pre class="mp-logs-content" id="mp-logs-content"><?php echo esc_html($import_logs); ?></pre>
+                            </div>
+                            <p class="mp-logs-info">Wyświetlono ostatnie <?php echo self::LOG_LINES_LIMIT; ?> linii logów importu.</p>
+                        <?php endif; ?>
+                    </div>
+                </div>
             </div>
             
             <?php if (isset($_GET['api_test']) && $_GET['api_test'] === 'complete') : ?>
@@ -171,6 +191,36 @@ class MP_Admin {
             </div>
         </div>
         <?php
+    }
+    
+    /**
+     * Define log lines limit constant
+     */
+    const LOG_LINES_LIMIT = 100;
+    
+    /**
+     * Get recent MP import logs
+     * 
+     * @return string Import logs as a formatted string
+     */
+    private static function get_import_logs() {
+        $log_file = WP_CONTENT_DIR . '/debug.log';
+        $logs = '';
+        
+        if (file_exists($log_file)) {
+            $file_content = file_get_contents($log_file);
+            
+            // Match lines containing "MP Plugin"
+            preg_match_all('/\[\d{2}-\w{3}-\d{4} \d{2}:\d{2}:\d{2} UTC\] MP Plugin:.*$/m', $file_content, $matches);
+            
+            if (!empty($matches[0])) {
+                // Get the last X lines
+                $lines = array_slice($matches[0], -self::LOG_LINES_LIMIT);
+                $logs = implode("\n", $lines);
+            }
+        }
+        
+        return $logs;
     }
     
     /**
@@ -321,6 +371,21 @@ class MP_Admin {
         
         $result = self::process_import_batch();
         wp_send_json($result);
+    }
+    
+    /**
+     * AJAX handler to get import logs
+     */
+    public static function ajax_get_import_logs() {
+        check_ajax_referer('mp_admin_nonce', 'nonce');
+        
+        $logs = self::get_import_logs();
+        
+        wp_send_json(array(
+            'success' => true,
+            'logs' => $logs,
+            'empty' => empty($logs)
+        ));
     }
     
     /**

@@ -4,6 +4,9 @@
     // Check import status every 3 seconds
     let statusChecker;
     
+    // Check logs every 2 seconds
+    let logsChecker;
+    
     // Initialize after page load
     $(document).ready(function() {
         console.log('MP Import: Admin script loaded');
@@ -16,6 +19,8 @@
             if ($('#mp-import-status').hasClass('is-active')) {
                 console.log('MP Import: Active import detected, starting status checker');
                 startStatusChecker();
+                // Also start logs checker when import is active
+                startLogsChecker();
             }
             
             // Import form handler
@@ -52,6 +57,9 @@
                     emergencyStopImport();
                 }
             });
+            
+            // Initial log fetch
+            fetchImportLogs();
         }
     });
     
@@ -78,6 +86,69 @@
             console.log('MP Import: Status checker stopped');
         }
     }
+
+    // Start checking logs
+    function startLogsChecker() {
+        // Stop existing checker if it exists
+        if (logsChecker) {
+            clearInterval(logsChecker);
+        }
+        
+        // Set interval to check every 2 seconds
+        logsChecker = setInterval(fetchImportLogs, 2000);
+        console.log('MP Import: Logs checker started');
+    }
+    
+    // Stop checking logs
+    function stopLogsChecker() {
+        if (logsChecker) {
+            clearInterval(logsChecker);
+            logsChecker = null;
+            console.log('MP Import: Logs checker stopped');
+        }
+    }
+    
+    // Fetch import logs via AJAX
+    function fetchImportLogs() {
+        $.ajax({
+            url: mp_admin.ajax_url,
+            type: 'POST',
+            data: {
+                action: 'mp_get_import_logs',
+                nonce: mp_admin.nonce
+            },
+            success: function(response) {
+                if (response.success) {
+                    updateLogsUI(response.logs, response.empty);
+                }
+            },
+            error: function(xhr, status, error) {
+                console.error('MP Import: Error fetching logs:', error);
+            }
+        });
+    }
+    
+    // Update logs UI
+    function updateLogsUI(logs, isEmpty) {
+        if (isEmpty) {
+            $('#mp-no-logs').show();
+            $('#mp-logs-content').parent('.mp-logs-wrapper').hide();
+        } else {
+            $('#mp-no-logs').hide();
+            
+            // Update logs content
+            $('#mp-logs-content').text(logs);
+            
+            // Make sure the wrapper is visible
+            $('#mp-logs-content').parent('.mp-logs-wrapper').show();
+            
+            // Scroll to bottom
+            const logsContainer = document.querySelector('.mp-logs-wrapper');
+            if (logsContainer) {
+                logsContainer.scrollTop = logsContainer.scrollHeight;
+            }
+        }
+    }
     
     // Check import status via AJAX
     function checkImportStatus() {
@@ -97,6 +168,11 @@
                     // If import is in progress, update UI and automatically process next batch
                     updateProgressUI(response);
                     
+                    // Start logs checker if not already running
+                    if (!logsChecker) {
+                        startLogsChecker();
+                    }
+                    
                     // If we have auto-import button, click it
                     if ($('#mp-auto-import').length && $('#mp-auto-import').is(':visible')) {
                         $('#mp-auto-import').trigger('click');
@@ -109,17 +185,27 @@
                 } else if (response.status === 'running') {
                     // Status "running" - update UI
                     updateProgressUI(response);
+                    
+                    // Start logs checker if not already running
+                    if (!logsChecker) {
+                        startLogsChecker();
+                    }
                 } else if (response.status === 'completed') {
                     // Import completed - show message
                     stopStatusChecker();
+                    // Keep logs checker running for a bit longer to show final logs
+                    setTimeout(stopLogsChecker, 5000);
                     showCompletedMessage(response.imported);
                 } else if (response.status === 'stopped') {
                     // Import stopped - show message
                     stopStatusChecker();
+                    // Keep logs checker running for a bit longer to show final logs
+                    setTimeout(stopLogsChecker, 5000);
                     showStoppedMessage(response.imported);
                 } else {
                     // Import not running
                     stopStatusChecker();
+                    stopLogsChecker();
                 }
             },
             error: function(xhr, status, error) {
@@ -127,6 +213,7 @@
                 $('#mp-error-message').text('Error checking import status: ' + error);
                 $('#mp-import-error').show();
                 stopStatusChecker();
+                stopLogsChecker();
             }
         });
     }
@@ -177,14 +264,23 @@
                     if (!statusChecker) {
                         startStatusChecker();
                     }
+                    
+                    // Start logs checker if not already running
+                    if (!logsChecker) {
+                        startLogsChecker();
+                    }
                 } else if (response.status === 'completed') {
                     // Import completed
                     updateProgressUI(response);
                     stopStatusChecker();
+                    // Keep logs checker running for a bit longer to show final logs
+                    setTimeout(stopLogsChecker, 5000);
                     showCompletedMessage(response.imported);
                 } else if (response.status === 'stopped') {
                     // Import stopped
                     stopStatusChecker();
+                    // Keep logs checker running for a bit longer to show final logs
+                    setTimeout(stopLogsChecker, 5000);
                     showStoppedMessage(response.imported);
                 }
             },
